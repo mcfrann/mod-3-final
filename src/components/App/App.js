@@ -16,23 +16,21 @@ export class App extends Component {
     this.fetchUrls()
   }
 
-  componentDidUpdate() {
-    this.fetchUrls()
-  }
-
   fetchUrls() {
-    getUrls().then((newUrls) => this.setState(newUrls))
+    getUrls().then((newUrls) => this.setState({ urls: newUrls.urls }))
   }
 
   addUrl(newUrl) {
     postUrl(newUrl)
+      .then((response) => response.json())
+      .then((res) => this.setState({ urls: [...this.state.urls, res] }))
   }
 
   render() {
     return (
       <main className='App'>
         <header>
-          <h1>URL Shortener</h1>
+          <h1 className='page-title'>URL Shortener</h1>
           <UrlForm addUrl={this.addUrl} />
         </header>
 
